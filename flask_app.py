@@ -41,7 +41,7 @@ def alphabet_checker_api():
 # To check if an input contain every letter in the alphabet
 def has_all_alphabets(input: str):
     if input == None:
-        abort(400)
+        abort(400, description="Input cannot be None")
 
     elif len(input) < 26 :
         result = False

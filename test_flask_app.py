@@ -1,6 +1,7 @@
 # test_flask_app.py
 
-from flask_app import app
+from flask_app import app, has_all_alphabets
+import pytest
 
 # Test Hello and the data
 def test_hello():
@@ -42,7 +43,9 @@ def test_alphabet_checker_api_true_input():
     assert response.status_code == 200
     assert response.data == b'{"input": "The quick brown fox jumps over the lazy dog", "result": true}'
 
-
-
-
+def test_has_all_alphabets_none_input():
+    with pytest.raises(Exception) as err:
+        has_all_alphabets(None)
+    assert str(err.value) == "400 Bad Request: Input cannot be None"
+    assert err.value.code == 400
 
