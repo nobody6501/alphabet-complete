@@ -1,7 +1,11 @@
 # test_flask_app.py
 
 from flask_app import app, has_all_alphabets
+import json
 import pytest
+
+true_input = "The quick brown fox jumps over the lazy dog"
+false_input = "abccd121892"
 
 # Test Hello and the data
 def test_hello():
@@ -48,4 +52,16 @@ def test_has_all_alphabets_none_input():
         has_all_alphabets(None)
     assert str(err.value) == "400 Bad Request: Input cannot be None"
     assert err.value.code == 400
+
+def test_has_all_alphabets_false_input():
+
+    result_json = has_all_alphabets(false_input)
+    result = json.loads(result_json)
+    assert result["input"] == false_input
+    assert result["result"] == False
+
+
+
+
+
 
