@@ -60,6 +60,12 @@ def test_has_all_alphabets_false_input():
     assert result["input"] == false_input
     assert result["result"] == False
 
+def test_has_all_alphabets_true_input():
+
+    result_json = has_all_alphabets(true_input)
+    result = json.loads(result_json)
+    assert result["input"] == true_input
+    assert result["result"] == True
 
 
 
