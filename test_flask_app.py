@@ -1,6 +1,6 @@
 # test_flask_app.py
 
-from flask_app import app, has_all_alphabets
+from flask_app import app, has_all_letters
 import json
 import pytest
 
@@ -8,7 +8,6 @@ true_input = "The quick brown fox jumps over the lazy dog"
 false_input = "abccd121892"
 
 
-# Test Hello and the data
 def test_hello():
     response = app.test_client().get('/hello')
 
@@ -51,23 +50,23 @@ def test_alphabet_checker_api_true_input():
     assert response.data == b'{"input": "The quick brown fox jumps over the lazy dog", "result": true}'
 
 
-def test_has_all_alphabets_none_input():
+def test_has_all_letters_none_input():
     with pytest.raises(Exception) as err:
-        has_all_alphabets(None)
+        has_all_letters(None)
     assert str(err.value) == "400 Bad Request: Input cannot be None"
     assert err.value.code == 400
 
 
-def test_has_all_alphabets_false_input():
+def test_has_all_letters_false_input():
 
-    result_json = has_all_alphabets(false_input)
+    result_json = has_all_letters(false_input)
     result = json.loads(result_json)
     assert result["input"] == false_input
     assert result["result"] == False
 
 
-def test_has_all_alphabets_true_input():
-    result_json = has_all_alphabets(true_input)
+def test_has_all_letters_true_input():
+    result_json = has_all_letters(true_input)
     result = json.loads(result_json)
     assert result["input"] == true_input
     assert result["result"] == True
@@ -79,4 +78,3 @@ def test_emoji_input():
     assert response.status_code == 200
     assert result["input"] == '😀'
     assert result["result"] == False
-    # {"input": "\ud83d\ude00", "result": false}'

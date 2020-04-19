@@ -20,7 +20,7 @@ def resource_not_found(e):
 def alphabet_checker():
     if request.method == 'POST':
         form_input = request.form.get('input')
-        result_json = has_all_alphabets(form_input)
+        result_json = has_all_letters(form_input)
         result = json.loads(result_json)["result"]
 
         return '''<h1>The input value is: {}</h1>
@@ -38,11 +38,11 @@ def alphabet_checker():
 @app.route("/api/alphabet-checker", methods=['GET', 'POST'])
 def alphabet_checker_api():
     input = request.args.get('input')
-    return has_all_alphabets(input)
+    return has_all_letters(input)
 
 
 # To check if an input contain every letter in the alphabet
-def has_all_alphabets(input: str):
+def has_all_letters(input: str):
     if input is None:
         abort(400, description="Input cannot be None")
 
@@ -50,7 +50,7 @@ def has_all_alphabets(input: str):
         result = False
 
     else:
-        # put any alphabet into a set in upper case
+        # put every alphabet into a set in upper case
         # then make sure the size of the set is 26,
         # the total number of alphabet letters
         result = len(set([x.upper() for x in input if x.isalpha()])) == 26
