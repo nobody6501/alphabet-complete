@@ -7,6 +7,7 @@ import pytest
 true_input = "The quick brown fox jumps over the lazy dog"
 false_input = "abccd121892"
 
+
 # Test Hello and the data
 def test_hello():
     response = app.test_client().get('/hello')
@@ -17,8 +18,8 @@ def test_hello():
 
 def test_404():
     response = app.test_client().get('/chicken')
-
     assert response.status_code == 404
+
 
 def test_alphabet_checker_page():
     response = app.test_client().get('/alphabet-checker')
@@ -26,11 +27,12 @@ def test_alphabet_checker_page():
     assert response.status_code == 200
     assert "input" in str(response.data)
 
+
 def test_alphabet_checker_api_no_input():
     response = app.test_client().get('/api/alphabet-checker')
-
     assert response.status_code == 400
     assert "Bad Request" in str(response.data)
+
 
 def test_alphabet_checker_api_has_input():
     response = app.test_client().get('/api/alphabet-checker?input=abc')
@@ -42,16 +44,19 @@ def test_alphabet_checker_api_false_input():
     assert response.status_code == 200
     assert response.data == b'{"input": "abccd12", "result": false}'
 
+
 def test_alphabet_checker_api_true_input():
     response = app.test_client().get('/api/alphabet-checker?input=The quick brown fox jumps over the lazy dog')
     assert response.status_code == 200
     assert response.data == b'{"input": "The quick brown fox jumps over the lazy dog", "result": true}'
+
 
 def test_has_all_alphabets_none_input():
     with pytest.raises(Exception) as err:
         has_all_alphabets(None)
     assert str(err.value) == "400 Bad Request: Input cannot be None"
     assert err.value.code == 400
+
 
 def test_has_all_alphabets_false_input():
 
@@ -60,14 +65,18 @@ def test_has_all_alphabets_false_input():
     assert result["input"] == false_input
     assert result["result"] == False
 
-def test_has_all_alphabets_true_input():
 
+def test_has_all_alphabets_true_input():
     result_json = has_all_alphabets(true_input)
     result = json.loads(result_json)
     assert result["input"] == true_input
     assert result["result"] == True
 
 
-
-
-
+def test_emoji_input():
+    response = app.test_client().get('/api/alphabet-checker?input=😀')
+    result = json.loads(response.data)
+    assert response.status_code == 200
+    assert result["input"] == '😀'
+    assert result["result"] == False
+    # {"input": "\ud83d\ude00", "result": false}'
